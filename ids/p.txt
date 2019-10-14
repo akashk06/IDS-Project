@@ -1,0 +1,98 @@
+import pandas as pd
+import numpy as nm
+import matplotlib.pyplot as plt 
+
+with open('dataset.csv') as f:
+   print(f)
+   
+d = pd.read_csv('dataset.csv', encoding = 'cp1252', header=[0])
+#print(d)
+
+'''header = pd.read_csv('dataset.csv', encoding = 'cp1252', header=[0,1])
+print(header)'''
+
+
+# TO CALCULATE THE NO.OF SHOOTINGS IN A GIVEN YEAR
+dates = d['Date']
+year = {}
+          
+for i in dates:
+    for j in i.split("/"):
+        if(int(j) >= 1966):
+            if(j in year.keys()):
+                year[j] += 1
+            else:
+                year[j] = 1
+                
+#givenyear = str(input())
+
+#print("no of shootings in the year ", givenyear, " is ", year[givenyear])
+                
+                
+#--------------------------------------------------------------
+
+# TO CALCULATE THE NO.OF PEOPLE KILLED IN A GIVEN YEAR
+
+# contains no.of rows and columns
+shape = d.shape
+print(shape)
+columns = d.columns
+print(columns)
+
+#create a dataframe containing the dates, fatalities and the years it occured
+df = d[['Date', 'Fatalities']]
+
+def getYear(date):
+    yr = ""
+    for i in date.split("/"):
+        yr = i
+    return yr
+
+yearlist = []
+for i in d['Date']:
+    yearlist.append(getYear(i))       
+    
+df.insert(2, 'years', yearlist, allow_duplicates=True)
+#print(df)
+
+def calculateNoOfPeopleKilledInAYear(df):
+    fatalities = {}
+    for i,j in zip(df['Fatalities'], df['years']):
+        if j not in fatalities.keys():
+            fatalities[j] = int(i)
+        else:
+            fatalities[j] += int(i)
+            
+    return fatalities
+     
+fatals = calculateNoOfPeopleKilledInAYear(df)
+
+'''
+givenyear = input("enter year: ")
+print(fatals[givenyear])
+'''
+
+# to calculate the target audience
+aud = d['Target']    #audience dataframe
+freq = {}
+
+
+for i in aud:
+   # print (i)
+    if i == 'nan' or i == None or i == ' ':
+        print("found")
+        break
+
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
